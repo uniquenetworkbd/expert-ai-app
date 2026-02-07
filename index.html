@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpertBrain AI Dashboard</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0088cc;
+            --dark-bg: #0e1621;
+            --card-bg: #17212b;
+            --accent: #ffd700;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            background: linear-gradient(180deg, var(--primary), var(--dark-bg));
+            padding: 40px 20px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+        .container { padding: 20px; margin-top: -40px; }
+        .stats-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .stat-box i { color: var(--accent); font-size: 24px; }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .menu-item {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-upgrade {
+            background: linear-gradient(90deg, #ffd700, #ffa500);
+            color: black;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-top: 25px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <i class="fas fa-brain fa-3x" style="color: var(--accent);"></i>
+        <h2>ExpertBrain Pro</h2>
+        <p id="welcome-msg">স্বাগতম!</p>
+    </div>
+    <div class="container">
+        <div class="stats-card">
+            <div class="stat-box"><i class="fas fa-bolt"></i><p>ক্রেডিট: ৫০</p></div>
+            <div class="stat-box"><i class="fas fa-crown"></i><p>প্ল্যান: ফ্রি</p></div>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-item"><i class="fas fa-database"></i><p>নলেজ বেস</p></div>
+            <div class="menu-item"><i class="fas fa-history"></i><p>হিস্টোরি</p></div>
+            <div class="menu-item"><i class="fas fa-user-shield"></i><p>প্রাইভেসি</p></div>
+            <div class="menu-item"><i class="fas fa-headset"></i><p>সাপোর্ট</p></div>
+        </div>
+        <button class="btn-upgrade" onclick="upgrade()">প্রিমিয়াম নিন</button>
+    </div>
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        document.getElementById("welcome-msg").innerText = "স্বাগতম, " + (tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "ইউজার") + "!";
+        function upgrade() { tg.showAlert("পেমেন্ট গেটওয়ে শীঘ্রই আসছে!"); }
+    </script>
+</body>
+</html>
