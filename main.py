@@ -1,47 +1,30 @@
 import telebot
 import os
 import requests
-import datetime
 
 TOKEN = os.getenv('BOT_TOKEN')
 bot = telebot.TeleBot(TOKEN)
 
-# আপনার নিজের টেলিগ্রাম আইডি এখানে দিন (নিরাপত্তার জন্য)
-ADMIN_ID = 123456789  # @userinfobot থেকে আপনার আইডি নিয়ে এখানে বসান
+# আপনার আইডি জানার জন্য /id কমান্ড দিন, তারপর সেই নম্বরটি এখানে বসান
+ADMIN_ID = 123456789 
 
-@bot.message_handler(commands=['check_system'])
-def check_system(message):
+@bot.message_handler(commands=['check'])
+def check_github(message):
     if message.from_user.id == ADMIN_ID:
-        status_msg = "🔍 **সিস্টেম ডায়াগনস্টিক রিপোর্ট:**\n\n"
-        
-        # ১. কানেকশন চেক
-        status_msg += "✅ **Server:** Render Cloud (Online)\n"
-        
-        # ২. সময় চেক
-        now = datetime.datetime.now()
-        status_msg += f"⏰ **Time:** {now.strftime('%Y-%m-%d %H:%M:%S')}\n"
-        
-        # ৩. গিটহাব ড্যাশবোর্ড চেক
-        github_url = "https://uniquenetworkbd.github.io/expert-ai-app/"
+        url = "https://uniquenetworkbd.github.io/expert-ai-app/"
         try:
-            response = requests.get(github_url)
-            if response.status_code == 200:
-                status_msg += "✅ **GitHub Pages:** Active (200 OK)\n"
+            r = requests.get(url)
+            if r.status_code == 200:
+                bot.reply_to(message, "✅ GitHub Pages একদম ঠিক আছে! (Status: 200)")
             else:
-                status_msg += f"❌ **GitHub Pages Error:** Status Code {response.status_code}\n"
+                bot.reply_to(message, f"❌ GitHub Pages-এ সমস্যা! Error Code: {r.status_code}")
         except:
-            status_msg += "❌ **GitHub Pages:** Unreachable\n"
-            
-        bot.send_message(message.chat.id, status_msg, parse_mode='Markdown')
+            bot.reply_to(message, "❌ গিটহাব সার্ভারে পৌঁছানো যাচ্ছে না।")
     else:
-        bot.reply_to(message, "⚠️ আপনি এই সিস্টেমের অ্যাডমিন নন।")
+        bot.reply_to(message, "⛔ শুধু অ্যাডমিন এই কমান্ড দিতে পারবে।")
 
-# এরর হ্যান্ডলিং (গিটহাবে কোনো সমস্যা হলে বট আপনাকে জানাবে)
-@bot.message_handler(commands=['logs'])
-def get_logs(message):
-    if message.from_user.id == ADMIN_ID:
-        bot.reply_to(message, "📜 শেষ ৩টি এরর চেক করা হচ্ছে... (বর্তমানে কোনো এরর নেই)")
+@bot.message_handler(commands=['id'])
+def get_id(message):
+    bot.reply_to(message, f"আপনার আইডি: {message.from_user.id}")
 
-print("সিস্টেম চেকার সচল...")
 bot.polling(none_stop=True)
-
